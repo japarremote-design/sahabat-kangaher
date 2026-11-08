@@ -1,6 +1,6 @@
 # Sahabat Kang Aher
 
-Live: https://sahabat.kangaher.workers.dev/
+Live: https://sahabat.kangaher.web.id/
 
 Landing page komunitas **Sahabat Kang Aher (Ahmad Heryawan)**: profil, perjalanan karier, program untuk Jawa Barat, 206 penghargaan (bisa disaring per tahun & dicari), jejak pemilu, isu & klarifikasi, serta sumber.
 

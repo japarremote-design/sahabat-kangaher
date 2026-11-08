@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://sahabat.kangaher.workers.dev/sitemap.xml
+Sitemap: https://sahabat.kangaher.web.id/sitemap.xml
