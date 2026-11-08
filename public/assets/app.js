@@ -2,19 +2,20 @@
   "use strict";
   var $ = function (s) { return document.querySelector(s); };
 
-  /* ---- menu ponsel ---- */
-  var toggle = $(".nav-toggle"), nav = $("#menu");
-  toggle.addEventListener("click", function () {
-    var open = nav.classList.toggle("open");
+  /* ---- menu ponsel (bawah, dekat jempol) ---- */
+  var toggle = $(".nav-toggle"), nav = $("#menu"), tirai = $(".tirai");
+  function setMenu(open) {
+    nav.classList.toggle("open", open);
     toggle.setAttribute("aria-expanded", open);
-    toggle.textContent = open ? "Tutup" : "Menu";
-  });
-  nav.addEventListener("click", function (e) {
-    if (e.target.closest("a") && nav.classList.contains("open")) toggle.click();
-  });
+    tirai.hidden = !open;
+  }
+  toggle.addEventListener("click", function () { setMenu(!nav.classList.contains("open")); });
+  tirai.addEventListener("click", function () { setMenu(false); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") setMenu(false); });
+  nav.addEventListener("click", function (e) { if (e.target.closest("a")) setMenu(false); });
 
   /* ---- penanda menu aktif ---- */
-  var links = Array.prototype.slice.call(nav.querySelectorAll("a"));
+  var links = Array.prototype.slice.call(document.querySelectorAll("#menu a, .bawah a"));
   if ("IntersectionObserver" in window) {
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
