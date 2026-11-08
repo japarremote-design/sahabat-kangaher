@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "fanskangaher",
+  "name": "kangaher-indonesia",
   "compatibility_date": "2026-11-01",
   "assets": {
     "directory": "./public",
