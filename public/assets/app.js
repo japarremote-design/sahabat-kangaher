@@ -100,7 +100,7 @@
   $("#ref").innerHTML = refs.map(function (r) { return "<li>" + esc(r) + "</li>"; }).join("");
 
   /* ---- bagikan ---- */
-  var url = "https://fanskangaher.web.id/";
+  var url = location.origin + "/";
   var text = "Kenali lebih dekat Kang Aher, Ahmad Heryawan: dari Sukaraja ke Gedung Sate dua periode, lalu Senayan.";
   var e = encodeURIComponent;
   var share = {

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://fanskangaher.web.id/sitemap.xml
+Sitemap: https://sahabat.kangaher.workers.dev/sitemap.xml
