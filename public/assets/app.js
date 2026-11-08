@@ -101,16 +101,21 @@
 
   /* ---- feed medsos: dimuat saat section terlihat ---- */
   var feedBox = document.querySelector("#medsos");
+  /* daftar video TikTok pilihan: isi ID video, mis. "7420000000000000000" */
+  var TT_VIDEO = [];
+  function muatTikTok() {
+    var box = document.getElementById("tt-video");
+    if (!box || !TT_VIDEO.length) return;
+    box.innerHTML = TT_VIDEO.map(function (id) {
+      return '<blockquote class="tiktok-embed" cite="https://www.tiktok.com/@aheryawanofficial/video/' + id + '" data-video-id="' + id + '"><section></section></blockquote>';
+    }).join("");
+    var sc = document.createElement("script"); sc.async = true; sc.src = "https://www.tiktok.com/embed.js";
+    document.body.appendChild(sc);
+  }
   function muatFeed() {
+    muatTikTok();
     Array.prototype.forEach.call(document.querySelectorAll("[data-embed]"), function (box) {
       var jenis = box.dataset.embed;
-      if (jenis === "tt") {
-        if (!document.querySelector('script[src*="tiktok.com/embed.js"]')) {
-          var sc = document.createElement("script"); sc.async = true; sc.src = "https://www.tiktok.com/embed.js";
-          document.body.appendChild(sc);
-        }
-        return;
-      }
       var f = document.createElement("iframe");
       var src = box.dataset.src;
       if (jenis === "fb") {
