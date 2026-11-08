@@ -99,6 +99,37 @@
   $("#nref").textContent = refs.length;
   $("#ref").innerHTML = refs.map(function (r) { return "<li>" + esc(r) + "</li>"; }).join("");
 
+  /* ---- feed medsos: dimuat saat section terlihat ---- */
+  var feedBox = document.querySelector("#medsos");
+  function muatFeed() {
+    Array.prototype.forEach.call(document.querySelectorAll("[data-embed]"), function (box) {
+      var jenis = box.dataset.embed;
+      if (jenis === "tt") {
+        if (!document.querySelector('script[src*="tiktok.com/embed.js"]')) {
+          var sc = document.createElement("script"); sc.async = true; sc.src = "https://www.tiktok.com/embed.js";
+          document.body.appendChild(sc);
+        }
+        return;
+      }
+      var f = document.createElement("iframe");
+      var src = box.dataset.src;
+      if (jenis === "fb") {
+        var w = Math.max(180, Math.min(500, Math.floor(box.clientWidth)));
+        src = src.replace(/width=\d+/, "width=" + w).replace(/height=\d+/, "height=" + Math.floor(box.clientHeight || 560));
+      }
+      f.src = src; f.loading = "lazy"; f.title = jenis === "fb" ? "Facebook Kang Aher" : "Instagram Kang Aher";
+      f.setAttribute("allow", "encrypted-media; clipboard-write; picture-in-picture");
+      f.setAttribute("scrolling", "yes");
+      box.innerHTML = ""; box.appendChild(f);
+    });
+  }
+  if (feedBox && "IntersectionObserver" in window) {
+    var fio = new IntersectionObserver(function (en) {
+      if (en.some(function (e) { return e.isIntersecting; })) { muatFeed(); fio.disconnect(); }
+    }, { rootMargin: "400px 0px" });
+    fio.observe(feedBox);
+  } else if (feedBox) { muatFeed(); }
+
   /* ---- bagikan ---- */
   var url = location.origin + "/";
   var text = "Kenali lebih dekat Kang Aher, Ahmad Heryawan: dari Sukaraja ke Gedung Sate dua periode, lalu Senayan.";
