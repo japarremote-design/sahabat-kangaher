@@ -86,12 +86,38 @@ p:last-child { margin-bottom: 0; }
 .brand { display: flex; align-items: center; gap: .6rem; text-decoration: none; font-weight: 700; font-stretch: 90%; font-size: 1.05rem; }
 .brand svg { width: 1.6rem; height: 1.6rem; }
 .brand b { color: var(--oren); font-weight: 800; }
-.nav ul { display: flex; gap: 1.4rem; list-style: none; margin: 0; padding: 0; }
-.nav a { text-decoration: none; font-size: .95rem; font-weight: 500; opacity: .85; }
-.nav a:hover, .nav a[aria-current="true"] { opacity: 1; text-decoration: underline; text-decoration-color: var(--oren); text-decoration-thickness: 3px; }
+/* ikon chip warna-warni */
+.ik { display: inline-grid; place-items: center; flex: none; width: 1.75rem; height: 1.75rem; border-radius: 8px; }
+.ik svg { width: 1.05rem; height: 1.05rem; fill: currentColor; }
+.c1 { background: #ffe3d3; color: #d94400; }
+.c2 { background: #d6f2e2; color: #0a8a4a; }
+.c3 { background: #fff0c2; color: #946400; }
+.c4 { background: #e2e8f8; color: #2a4ba8; }
+.c5 { background: #d3f0f3; color: #0b7584; }
+
+/* menu desktop + dropdown sub menu */
+.nav > ul { display: flex; align-items: center; gap: .9rem; list-style: none; margin: 0; padding: 0; }
+.nav > ul > li { position: relative; display: flex; align-items: center; }
+.nav a { display: flex; align-items: center; gap: .45rem; text-decoration: none; font-size: .93rem; font-weight: 600; color: var(--leuweung); }
+.nav > ul > li > a:hover span, .nav > ul > li > a[aria-current="true"] span { text-decoration: underline; text-decoration-color: var(--oren); text-decoration-thickness: 3px; text-underline-offset: .3em; }
+.sub-tg { background: none; border: 0; padding: 0; width: 1.3rem; height: 1.6rem; color: var(--leuweung); cursor: pointer; display: grid; place-items: center; }
+.sub-tg svg { width: 1.1rem; height: 1.1rem; fill: currentColor; transition: transform .2s; }
+.sub { list-style: none; margin: 0; padding: .5rem; }
+@media (min-width: 1101px) {
+  .sub {
+    position: absolute; top: calc(100% + .9rem); left: -.6rem; min-width: 15.5rem; z-index: 60;
+    background: var(--bodas); border-radius: 14px; border: 1px solid var(--garis);
+    box-shadow: 0 18px 40px rgba(30,43,37,.16); display: none;
+  }
+  .sub::before { content: ""; position: absolute; left: 0; right: 0; top: -1rem; height: 1rem; }
+  .punya-sub:hover > .sub, .punya-sub:focus-within > .sub, .punya-sub.open > .sub { display: block; }
+  .punya-sub:hover > .sub-tg svg, .punya-sub.open > .sub-tg svg { transform: rotate(180deg); }
+  .sub a { padding: .5rem .6rem; border-radius: 9px; white-space: nowrap; font-size: .95rem; font-weight: 500; }
+  .sub a:hover { background: var(--kapas); }
+}
 
 .bawah, .tirai { display: none; }
-@media (max-width: 860px) {
+@media (max-width: 1100px) {
   body { padding-bottom: calc(4.25rem + env(safe-area-inset-bottom)); }
   .bawah {
     display: grid; grid-template-columns: repeat(5, 1fr);
@@ -102,30 +128,42 @@ p:last-child { margin-bottom: 0; }
     font-family: var(--sans);
   }
   .bawah a, .bawah button {
-    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .15rem;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .2rem;
     min-height: 3.4rem; padding: .25rem 0; border: 0; background: none; border-radius: 10px;
-    color: var(--leuweung); text-decoration: none; font: 600 .74rem/1.1 var(--sans); cursor: pointer;
+    color: var(--leuweung); text-decoration: none; font: 600 .72rem/1.1 var(--sans); cursor: pointer;
   }
-  .bawah svg { width: 1.45rem; height: 1.45rem; fill: currentColor; }
-  .bawah a[aria-current="true"], .bawah button[aria-expanded="true"] { color: var(--oren-tua); }
-  .bawah a[aria-current="true"] svg, .bawah button[aria-expanded="true"] svg { color: var(--oren); }
+  .bawah .ik { width: 2rem; height: 1.75rem; border-radius: 9px; }
+  .bawah .ik svg { width: 1.15rem; height: 1.15rem; }
+  .bawah a[aria-current="true"] span, .bawah button[aria-expanded="true"] span { color: var(--oren-tua); }
+  .bawah a[aria-current="true"] .ik, .bawah button[aria-expanded="true"] .ik { outline: 2px solid currentColor; outline-offset: 1px; }
   .bawah a:active, .bawah button:active { background: var(--kapas); }
 
   .nav {
     position: fixed; left: 0; right: 0; bottom: 0; z-index: 65; padding-bottom: calc(4.6rem + env(safe-area-inset-bottom));
-    background: var(--bodas); border-radius: 18px 18px 0 0; box-shadow: 0 -12px 30px rgba(30,43,37,.18);
-    max-height: 82vh; overflow: auto; display: none;
+    background: var(--bodas); border-radius: 20px 20px 0 0; box-shadow: 0 -12px 30px rgba(30,43,37,.18);
+    max-height: 84vh; overflow: auto; display: none; overscroll-behavior: contain;
   }
   .nav.open { display: block; }
   .nav::before { content: ""; display: block; width: 2.75rem; height: 4px; border-radius: 4px; background: var(--garis); margin: .65rem auto .25rem; }
-  .nav ul { flex-direction: column; gap: 0; padding: .25rem var(--gutter) 1rem; }
-  .nav a { display: block; padding: .95rem 0; font-size: 1.1rem; border-bottom: 1px solid var(--garis); }
-  .nav li:last-child a { border-bottom: 0; }
+  .nav > ul { flex-direction: column; align-items: stretch; gap: 0; padding: .25rem var(--gutter) 1rem; }
+  .nav > ul > li { display: grid; grid-template-columns: 1fr auto; align-items: center; border-bottom: 1px solid var(--garis); }
+  .nav > ul > li:last-child { border-bottom: 0; }
+  .nav > ul > li > a { padding: .7rem 0; font-size: 1.08rem; gap: .8rem; }
+  .nav > ul > li > a .ik { width: 2.35rem; height: 2.35rem; border-radius: 11px; }
+  .nav > ul > li > a .ik svg { width: 1.3rem; height: 1.3rem; }
+  .sub-tg { width: 2.75rem; height: 2.75rem; border-radius: 50%; }
+  .sub-tg:active { background: var(--kapas); }
+  .punya-sub.open > .sub-tg svg { transform: rotate(180deg); }
+  .sub { grid-column: 1 / -1; display: none; grid-template-columns: 1fr 1fr; gap: .5rem; padding: 0 0 .9rem 3.15rem; }
+  .punya-sub.open > .sub { display: grid; }
+  .sub a { padding: .5rem .55rem; border-radius: 10px; background: #fff7f1; border: 1px solid #f6e3d6; font-size: .9rem; font-weight: 600; line-height: 1.2; }
+  .sub a:active { background: var(--kapas); }
   .tirai { position: fixed; inset: 0; z-index: 40; background: rgba(30,43,37,.35); }
   .tirai:not([hidden]) { display: block; }
   .toast { bottom: calc(5.25rem + env(safe-area-inset-bottom)); }
 }
-@media (max-width: 860px) and (prefers-reduced-motion: no-preference) {
+@media (max-width: 420px) { .sub { grid-template-columns: 1fr; padding-left: 3.15rem; } }
+@media (max-width: 1100px) and (prefers-reduced-motion: no-preference) {
   .nav.open { animation: naik .22s ease-out; }
 }
 @keyframes naik { from { transform: translateY(24px); opacity: 0; } to { transform: none; opacity: 1; } }
@@ -158,31 +196,48 @@ p:last-child { margin-bottom: 0; }
 .btn.ghost { background: var(--bodas); border-color: var(--bodas); color: var(--leuweung); }
 .btn.ghost:hover { background: var(--kapas); border-color: var(--kapas); }
 
-/* tusuk sate */
+/* foto hero */
+.foto-hero { margin: 0; justify-self: center; width: min(100%, 25rem); position: relative; }
+.bingkai { border-radius: 999px 999px 18px 18px; overflow: hidden; border: 6px solid var(--bodas); background: #fb6e41; box-shadow: 0 24px 50px rgba(120,35,0,.28); }
+.bingkai img { display: block; width: 100%; height: auto; }
+.foto-hero figcaption {
+  position: absolute; left: 50%; bottom: -1.1rem; transform: translateX(-50%); white-space: nowrap;
+  background: var(--hijau); color: var(--bodas); font-family: var(--sans); text-align: center;
+  padding: .6rem 1.2rem; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,.18); line-height: 1.2;
+}
+.foto-hero figcaption b { display: block; font-size: 1.15rem; font-weight: 800; }
+.foto-hero figcaption { font-size: .85rem; font-weight: 500; }
+@media (max-width: 860px) {
+  .hero .wrap { grid-template-columns: 1fr; }
+  .foto-hero { width: min(86%, 22rem); margin: .5rem auto 1.5rem; }
+}
+
+/* tusuk sate (di bagian Perjalanan) */
+.kepala-lini { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2rem; align-items: start; margin-bottom: clamp(2rem, 4vw, 3rem); }
+.kepala-lini .sec-head { margin-bottom: 0; }
 .sate { position: relative; margin: 0; }
-.sate svg { width: auto; height: min(68vh, 34rem); max-width: 100%; overflow: visible; }
-@media (max-width: 860px) { .sate svg { height: auto; width: 100%; max-width: 21rem; } }
+.sate svg { width: 15rem; height: auto; overflow: visible; }
 .sate .rod { stroke: var(--leuweung); stroke-width: 4; stroke-linecap: round; }
-.sate .bead path { fill: var(--bodas); }
-.sate .bead.now path { fill: var(--koneng); stroke: var(--leuweung); stroke-width: 3; }
-.sate .yr { font: 800 25px var(--sans); font-stretch: 80%; fill: var(--bodas); }
+.sate .bead path { fill: var(--oren); }
+.sate .bead.now path { fill: var(--hijau); stroke: var(--leuweung); stroke-width: 3; }
+.sate .yr { font: 800 25px var(--sans); font-stretch: 80%; fill: var(--leuweung); }
 .sate .lbl { font: 500 17px var(--sans); fill: var(--leuweung); }
 .sate .tick { stroke: var(--leuweung); stroke-width: 1.5; }
-.sate figcaption { font-style: italic; font-size: var(--t-0); margin-top: .75rem; max-width: 22rem; }
-
+.sate figcaption { font-style: italic; font-size: var(--t-0); margin-top: .75rem; max-width: 16rem; }
+@media (max-width: 860px) {
+  .kepala-lini { grid-template-columns: 1fr; }
+  .sate svg { width: min(100%, 17rem); }
+}
 @media (prefers-reduced-motion: no-preference) {
-  .sate .bead { animation: turun .7s cubic-bezier(.2,.9,.25,1.15) both; animation-delay: calc(var(--i) * 110ms + 250ms); }
-  .sate .yr, .sate .lbl, .sate .tick { animation: muncul .5s ease-out both; animation-delay: calc(var(--i) * 110ms + 650ms); }
-  .sate .rod { stroke-dasharray: 640; stroke-dashoffset: 640; animation: tusuk .6s ease-out .05s forwards; }
+  .sate.tunggu:not(.jalan) .bead, .sate.tunggu:not(.jalan) .yr, .sate.tunggu:not(.jalan) .lbl, .sate.tunggu:not(.jalan) .tick { opacity: 0; }
+  .sate.tunggu:not(.jalan) .rod { stroke-dasharray: 640; stroke-dashoffset: 640; }
+  .sate.jalan .bead { animation: turun .7s cubic-bezier(.2,.9,.25,1.15) both; animation-delay: calc(var(--i) * 110ms + 250ms); }
+  .sate.jalan .yr, .sate.jalan .lbl, .sate.jalan .tick { animation: muncul .5s ease-out both; animation-delay: calc(var(--i) * 110ms + 650ms); }
+  .sate.jalan .rod { stroke-dasharray: 640; stroke-dashoffset: 640; animation: tusuk .6s ease-out .05s forwards; }
 }
 @keyframes turun { from { transform: translateY(-60px); opacity: 0; } to { transform: none; opacity: 1; } }
 @keyframes muncul { from { opacity: 0; } to { opacity: 1; } }
 @keyframes tusuk { to { stroke-dashoffset: 0; } }
-
-@media (max-width: 860px) {
-  .hero .wrap { grid-template-columns: 1fr; }
-  .sate { max-width: 26rem; }
-}
 
 /* ---------- sections ---------- */
 section { padding-block: clamp(3.5rem, 8vw, 6.5rem); }
@@ -225,16 +280,18 @@ section { padding-block: clamp(3.5rem, 8vw, 6.5rem); }
 .dua-kolom { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(2rem, 5vw, 4rem); }
 .dua-kolom h3 { font-size: var(--t-3); font-stretch: 85%; margin-bottom: .9rem; }
 .dua-kolom h4 { font-size: 1.1rem; margin: 1.5rem 0 .4rem; }
-.estafet { font-family: var(--sans); margin-top: 2.5rem; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 1rem; background: var(--bodas); border: 2px solid var(--leuweung); border-radius: 6px; padding: 1.25rem 1.5rem; }
-.estafet .tengah { text-align: center; background: var(--oren); color: var(--leuweung); padding: .9rem 1.2rem; border-radius: 4px; font-weight: 800; line-height: 1.25; }
-.estafet .tengah small { display: block; font-weight: 600; font-size: .85rem; }
+.estafet { font-family: var(--sans); margin-top: 2.5rem; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; scroll-margin-top: 5rem; gap: 1rem; background: var(--bodas); border: 2px solid var(--leuweung); border-radius: 6px; padding: 1.25rem 1.5rem; }
+.estafet .tengah { margin: 0; text-align: center; width: 15rem; }
+.estafet .tengah .bingkai { border-radius: 999px 999px 14px 14px; border-width: 5px; background: #aba59a; box-shadow: 0 14px 30px rgba(30,43,37,.18); }
+.estafet .tengah figcaption { margin-top: -.9rem; position: relative; background: var(--oren); color: var(--leuweung); padding: .75rem 1rem; border-radius: 10px; font-weight: 800; line-height: 1.25; }
+.estafet .tengah small { display: block; font-weight: 600; font-size: .82rem; }
 .estafet .sisi { font-size: .95rem; line-height: 1.4; }
 .estafet .sisi b { display: block; font-size: 1.05rem; }
 .estafet .kanan { text-align: right; }
 .estafet .ket { font-size: .8rem; opacity: .75; display: block; margin-bottom: .2rem; }
 @media (max-width: 760px) {
   .dua-kolom { grid-template-columns: 1fr; }
-  .estafet { grid-template-columns: 1fr; text-align: center; }
+  .estafet { grid-template-columns: 1fr; text-align: center; justify-items: center; }
   .estafet .kanan { text-align: center; }
 }
 
@@ -246,7 +303,10 @@ section { padding-block: clamp(3.5rem, 8vw, 6.5rem); }
   padding: 1.3rem 0; font-family: var(--sans);
 }
 .bidang summary::-webkit-details-marker { display: none; }
-.bidang summary h3 { font-size: clamp(1.5rem, 3.4vw, 2.3rem); font-stretch: 72%; font-weight: 850; }
+.bidang summary h3 { font-size: clamp(1.5rem, 3.4vw, 2.3rem); font-stretch: 72%; font-weight: 850; display: flex; align-items: center; gap: .7rem; }
+.bidang summary h3 .ik { width: 2.6rem; height: 2.6rem; border-radius: 12px; }
+.bidang summary h3 .ik svg { width: 1.45rem; height: 1.45rem; }
+.bidang summary .ringkas { padding-left: 3.3rem; }
 .bidang summary .ringkas { font-size: .95rem; opacity: .75; grid-column: 1; margin-top: .25rem; font-weight: 500; }
 .bidang summary .tanda { grid-row: 1 / span 2; grid-column: 2; align-self: center; width: 2.4rem; height: 2.4rem; border-radius: 50%; border: 2px solid var(--leuweung); display: grid; place-items: center; font-weight: 700; font-size: 1.4rem; line-height: 1; transition: transform .2s, background .2s; }
 .bidang details[open] .tanda { transform: rotate(45deg); background: var(--oren); }
@@ -375,4 +435,5 @@ section { padding-block: clamp(3.5rem, 8vw, 6.5rem); }
 .toast { position: fixed; left: 50%; bottom: 1.5rem; transform: translate(-50%, 1rem); background: var(--leuweung); color: var(--bodas); font: 600 .95rem var(--sans); padding: .8rem 1.2rem; border-radius: 999px; opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; z-index: 80; }
 .toast.on { opacity: 1; transform: translate(-50%, 0); }
 
+.jangkar { display: block; position: relative; top: -5rem; }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }

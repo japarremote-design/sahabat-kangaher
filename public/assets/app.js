@@ -12,10 +12,44 @@
   toggle.addEventListener("click", function () { setMenu(!nav.classList.contains("open")); });
   tirai.addEventListener("click", function () { setMenu(false); });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") setMenu(false); });
-  nav.addEventListener("click", function (e) { if (e.target.closest("a")) setMenu(false); });
+  nav.addEventListener("click", function (e) { if (e.target.closest("a")) { setMenu(false); tutupSub(); } });
+
+  /* sub menu: tombol panah membuka/menutup */
+  function tutupSub(kecuali) {
+    Array.prototype.forEach.call(nav.querySelectorAll(".punya-sub.open"), function (li) {
+      if (li === kecuali) return;
+      li.classList.remove("open"); li.querySelector(".sub-tg").setAttribute("aria-expanded", "false");
+    });
+  }
+  Array.prototype.forEach.call(nav.querySelectorAll(".sub-tg"), function (b) {
+    b.addEventListener("click", function (e) {
+      e.stopPropagation();
+      var li = b.parentNode, buka = !li.classList.contains("open");
+      tutupSub(li);
+      li.classList.toggle("open", buka); b.setAttribute("aria-expanded", buka);
+    });
+  });
+  document.addEventListener("click", function (e) { if (!e.target.closest("#menu")) tutupSub(); });
+
+  /* tautan ke bidang program: buka rinciannya */
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest('a[href^="#"]'); if (!a) return;
+    var t = document.getElementById(a.getAttribute("href").slice(1));
+    if (t && t.tagName === "DETAILS") t.open = true;
+  });
+
+  /* tusuk sate beranimasi saat terlihat */
+  var sate = $(".sate");
+  if (sate && "IntersectionObserver" in window) {
+    sate.classList.add("tunggu");
+    var sio = new IntersectionObserver(function (en) {
+      if (en[0].isIntersecting) { sate.classList.add("jalan"); sio.disconnect(); }
+    }, { threshold: .25 });
+    sio.observe(sate);
+  }
 
   /* ---- penanda menu aktif ---- */
-  var links = Array.prototype.slice.call(document.querySelectorAll("#menu a, .bawah a"));
+  var links = Array.prototype.slice.call(document.querySelectorAll("#menu > ul > li > a, .bawah a"));
   if ("IntersectionObserver" in window) {
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
