@@ -300,6 +300,7 @@ section { padding-block: clamp(3.5rem, 8vw, 6.5rem); }
 .s-ig { background: linear-gradient(45deg, #f9a03f, #d62976 50%, #7b2fd0); }
 .s-yt { background: #e62117; }
 .s-x { background: #000; }
+.s-th { background: #000; }
 .s-fb { background: #1b47b8; }
 .s-tt { background: #000; box-shadow: -2px -1px 0 #25f4ee inset, 2px 1px 0 #fe2c55 inset; }
 @media (max-width: 960px) {
@@ -453,12 +454,24 @@ section { padding-block: clamp(3.5rem, 8vw, 6.5rem); }
 .feed.fb header { background: #1b47b8; }
 .feed.ig header { background: linear-gradient(90deg, #7b2fd0, #d62976 55%, #fa7e1e); }
 .feed.tt header { background: #000; }
+.feed.yt header { background: #e62117; }
+.feed.x header, .feed.th header { background: #000; }
+.feed-isi.feed-kartu { flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 2rem 1.5rem; font-family: var(--sans); gap: .2rem; background: linear-gradient(180deg, #fff 0%, var(--kapas) 100%); }
+.fk-ikon { display: grid; place-items: center; width: 5.5rem; height: 5.5rem; border-radius: 50%; color: #fff; background: #000; margin-bottom: .8rem; }
+.feed.yt .fk-ikon { background: #e62117; }
+.fk-ikon svg { width: 2.7rem; height: 2.7rem; fill: currentColor; }
+.fk-handle { font-weight: 900; font-stretch: 80%; font-size: 1.7rem; margin: 0; }
+.fk-ket { font-family: var(--serif); font-size: .98rem; max-width: 18rem; margin: .3rem 0 1.25rem; }
+.fk-tombol { display: inline-block; background: #000; color: #fff; text-decoration: none; font-weight: 700; padding: .8rem 1.3rem; border-radius: 999px; }
+.feed.yt .fk-tombol { background: #e62117; }
+.fk-tombol:hover { opacity: .88; }
 .feed-isi { height: 560px; overflow: auto; display: flex; justify-content: center; align-items: flex-start; background: #fff; }
 .feed-isi iframe { border: 0; width: 100%; height: 100%; display: block; }
 .feed.tt .feed-isi { padding: .5rem; }
 .feed-isi .tiktok-embed { width: 100%; }
 .feed-cadangan { align-self: center; margin: auto; font-family: var(--sans); font-weight: 700; padding: .9rem 1.2rem; border: 2px solid var(--leuweung); border-radius: 999px; text-decoration: none; }
-@media (max-width: 960px) { .feed-grid { grid-template-columns: 1fr; } .feed-isi { height: 520px; } }
+@media (max-width: 960px) { .feed-grid { grid-template-columns: 1fr; } .feed-isi { height: 520px; } .feed-isi.feed-kartu { height: auto; min-height: 20rem; } }
+@media (min-width: 961px) and (max-width: 1180px) { .feed-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
 /* sebarkan */
 .sebar { background: var(--oren); }

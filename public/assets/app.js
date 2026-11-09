@@ -139,6 +139,7 @@
   function muatFeed() {
     Array.prototype.forEach.call(document.querySelectorAll("[data-embed]"), function (box) {
       var jenis = box.dataset.embed;
+      var src = box.dataset.src;
       if (jenis === "tt") {
         if (!document.querySelector('script[src*="tiktok.com/embed.js"]')) {
           var sc = document.createElement("script"); sc.async = true; sc.src = "https://www.tiktok.com/embed.js";
@@ -146,15 +147,26 @@
         }
         return;
       }
+      if (jenis === "x") {
+        if (!document.querySelector('script[src*="platform.twitter.com/widgets.js"]')) {
+          var xs = document.createElement("script"); xs.async = true; xs.src = "https://platform.twitter.com/widgets.js"; xs.charset = "utf-8";
+          document.body.appendChild(xs);
+        }
+        return;
+      }
+      if (jenis === "yt") {
+        var ch = box.dataset.channel; if (!ch) return;
+        src = "https://www.youtube-nocookie.com/embed/videoseries?list=UU" + ch.slice(2);
+        box.classList.remove("feed-kartu");
+      }
       var f = document.createElement("iframe");
-      var src = box.dataset.src;
       if (jenis === "fb") {
         var w = Math.max(180, Math.min(500, Math.floor(box.clientWidth)));
         src = src.replace(/width=\d+/, "width=" + w).replace(/height=\d+/, "height=" + Math.floor(box.clientHeight || 560));
       }
-      f.src = src; f.loading = "lazy"; f.title = jenis === "fb" ? "Facebook Kang Aher" : "Instagram Kang Aher";
+      f.src = src; f.loading = "lazy"; f.title = { fb: "Facebook Kang Aher", ig: "Instagram Kang Aher", yt: "Video YouTube Kang Aher" }[jenis];
       f.setAttribute("allow", "encrypted-media; clipboard-write; picture-in-picture");
-      f.setAttribute("scrolling", "yes");
+      f.setAttribute("scrolling", "yes"); f.setAttribute("allowfullscreen", "");
       box.innerHTML = ""; box.appendChild(f);
     });
   }
