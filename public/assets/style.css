@@ -183,6 +183,7 @@ p:last-child { margin-bottom: 0; }
   margin-left: -0.04em;
 }
 .hero h1 span { display: block; }
+.hero h1 .h1-pre { font-size: .3em; font-stretch: 80%; font-weight: 800; line-height: 1; letter-spacing: 0; color: var(--leuweung); background: var(--bodas); display: inline-block; padding: .12em .4em .16em; border-radius: .25em; margin: 0 0 .12em .06em; }
 .hero-lead { font-family: var(--sans); font-size: 1.5rem; font-weight: 500; line-height: 1.35; margin: 1.5rem 0 2rem; max-width: 30rem; font-stretch: 95%; }
 .hero-lead strong { font-weight: 800; }
 .cta-row { display: flex; flex-wrap: wrap; gap: .75rem; }
