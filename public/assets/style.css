@@ -603,3 +603,16 @@ section { padding-block: clamp(3.5rem, 8vw, 6.5rem); }
 .kabar-lain .kartu-kabar p { display: none; }
 @media (max-width: 960px) { .artikel-grid { grid-template-columns: 1fr; } .kabar-lain { position: static; } }
 .dua > .bio-kartu { grid-column: auto; }
+
+/* tanya jawab (profil) */
+.tanya { background: var(--kapas); }
+.tanya-daftar { max-width: 50rem; border-top: 2px solid var(--leuweung); }
+.tanya details { border-bottom: 1px solid var(--garis); }
+.tanya summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 1rem; padding: 1.1rem 0; }
+.tanya summary::-webkit-details-marker { display: none; }
+.tanya summary h3 { font-family: var(--sans); font-size: clamp(1.15rem, 2.4vw, 1.45rem); font-weight: 800; font-stretch: 85%; line-height: 1.25; margin: 0; }
+.tanya .tanda { width: 2.1rem; height: 2.1rem; border-radius: 50%; border: 2px solid var(--leuweung); display: grid; place-items: center; font-family: var(--sans); font-weight: 700; font-size: 1.25rem; line-height: 1; transition: transform .2s, background .2s; }
+.tanya details[open] .tanda { transform: rotate(45deg); background: var(--oren); color: #fff; border-color: var(--oren); }
+.tanya summary:focus-visible { outline: 3px solid var(--oren); outline-offset: 4px; border-radius: 6px; }
+.tanya details p { margin: 0 0 1.3rem; max-width: 44rem; }
+.tanya details p a { color: var(--oren-tua); font-weight: 600; }

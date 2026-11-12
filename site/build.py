@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parent.parent
 SITE, PUB = ROOT / "site", ROOT / "public"
 sys.path.insert(0, str(SITE))
 from kabar import KABAR  # noqa: E402
+from tanya import TANYA  # noqa: E402
 
 DOMAIN = "https://sahabat.kangaher.web.id"
 VER = datetime.datetime.now().strftime("%y%m%d%H%M")
@@ -113,7 +114,7 @@ HAL = {
 
 # ---------------------------------------------------------------- menu
 MENU = [
- ("profil", "profil", "c1", [("#data-diri", "Data diri", "kartu", "c3"), ("#pendidikan", "Pendidikan", "toga", "c4"), ("#pekerjaan", "Pekerjaan", "tas", "c2"), ("#organisasi", "Riwayat organisasi", "grup", "c3"), ("#kisah-awal", "Kisah awal", "buku", "c2")]),
+ ("profil", "profil", "c1", [("#data-diri", "Data diri", "kartu", "c3"), ("#pendidikan", "Pendidikan", "toga", "c4"), ("#pekerjaan", "Pekerjaan", "tas", "c2"), ("#organisasi", "Riwayat organisasi", "grup", "c3"), ("#kisah-awal", "Kisah awal", "buku", "c2"), ("#tanya-jawab", "Tanya jawab", "info", "c5")]),
  ("perjalanan", "rute", "c2", [("#th-1966", "Masa kecil &amp; sekolah", "pensil", "c3"), ("#th-1999", "DPRD DKI Jakarta", "gedung", "c4"), ("#th-2008", "Gubernur Jawa Barat", "kopiah", "c1"), ("#th-2024", "DPR RI &amp; BAM", "senayan", "c2"), ("#pilpres-2014", "Pilpres 2014", "kotak", "c1"), ("#estafet", "Estafet Gubernur Jabar", "estafet", "c2"), ("#suara", "Jejak pemilu", "grafik", "c3")]),
  ("program", "papan", "c1", [("#bidang-pendidikan", "Pendidikan", "toga", "c4"), ("#bidang-infrastruktur", "Infrastruktur", "jalan", "c1"), ("#bidang-lingkungan", "Lingkungan", "air", "c5"), ("#bidang-pertanian", "Pertanian &amp; kopi", "daun", "c2"), ("#bidang-industri", "Industri", "pabrik", "c4"), ("#bidang-tatakelola", "Tata kelola", "perisai", "c3"), ("#bidang-perumahan", "Perumahan rakyat", "rumah", "c1")]),
  ("penghargaan", "piala", "c3", [("#daftar-penghargaan", "206 penghargaan", "daftar", "c3"), ("#tanda-kehormatan", "Tanda kehormatan", "medali", "c1")]),
@@ -157,6 +158,31 @@ def bawah_html(aktif):
 
 
 # ---------------------------------------------------------------- kerangka
+def tanya_html():
+    q = "\n".join(f'''      <details{" open" if i == 0 else ""}>
+        <summary><h3>{t}</h3><span class="tanda" aria-hidden="true">+</span></summary>
+        <p>{j}</p>
+      </details>''' for i, (t, j) in enumerate(TANYA))
+    return f'''<section id="tanya-jawab" class="tanya" aria-labelledby="h-tanya">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 id="h-tanya">Yang sering ditanyakan</h2>
+      <p>Jawaban singkat untuk pertanyaan yang paling banyak dicari tentang Kang Aher.</p>
+    </div>
+    <div class="tanya-daftar">
+{q}
+    </div>
+  </div>
+</section>
+'''
+
+
+def faq_ld():
+    polos = lambda x: html.unescape(re.sub(r"<[^>]+>", "", x)).strip()
+    return {"@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": t, "acceptedAnswer": {"@type": "Answer", "text": polos(j)}} for t, j in TANYA]}
+
+
 def head_html(title, desc, path, og_img, og_type="website", jsonld=None):
     url = DOMAIN + path
     ld = f'<script type="application/ld+json">\n{json.dumps(jsonld, ensure_ascii=False)}\n</script>\n' if jsonld else ""
@@ -444,8 +470,9 @@ def main():
         if key == "profil":
             ld["@graph"][0]["@type"] = "ProfilePage"
             ld["@graph"][0]["mainEntity"] = PERSON
+            ld["@graph"].append(faq_ld())
         head = head_html(h["title"], h["desc"], h["path"], f"/og/{key}.png", jsonld=ld)
-        body = kepala_hal(h["h1"], h["lead"], [(h["nav"], None)]) + isi[key] + "\n" + part("sebar.html")
+        body = kepala_hal(h["h1"], h["lead"], [(h["nav"], None)]) + isi[key] + "\n" + (tanya_html() if key == "profil" else "") + part("sebar.html")
         body = tulis_ulang_tautan(body, peta, key)
         tulis(h["path"], rakit(h["path"], head, key, body, h.get("data", False)))
         urls.append((h["path"], HARI_INI))
