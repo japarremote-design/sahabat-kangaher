@@ -1,6 +1,8 @@
 (function () {
   "use strict";
   var $ = function (s) { return document.querySelector(s); };
+  function norm(s) { return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""); }
+  function esc(s) { return s.replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
 
   /* ---- menu ponsel (bawah, dekat jempol) ---- */
   var toggle = $(".nav-toggle"), nav = $("#menu"), tirai = $(".tirai");
@@ -38,6 +40,12 @@
     if (t && t.tagName === "DETAILS") t.open = true;
   });
 
+  /* datang dari halaman lain ke #bidang-x: buka rinciannya */
+  if (location.hash) {
+    var tujuan = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    if (tujuan && tujuan.tagName === "DETAILS") tujuan.open = true;
+  }
+
   /* tusuk sate beranimasi saat terlihat */
   var sate = $(".sate");
   if (sate && "IntersectionObserver" in window) {
@@ -48,23 +56,11 @@
     sio.observe(sate);
   }
 
-  /* ---- penanda menu aktif ---- */
-  var links = Array.prototype.slice.call(document.querySelectorAll("#menu > ul > li > a, .bawah a"));
-  if ("IntersectionObserver" in window) {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (!en.isIntersecting) return;
-        links.forEach(function (a) {
-          a.setAttribute("aria-current", a.getAttribute("href") === "#" + en.target.id ? "true" : "false");
-        });
-      });
-    }, { rootMargin: "-45% 0px -50% 0px" });
-    links.forEach(function (a) { var s = $(a.getAttribute("href")); if (s) io.observe(s); });
-  }
-
-  /* ---- penghargaan ---- */
+  /* ---- penghargaan (hanya di halaman yang memuatnya) ---- */
+  var histo = $("#histo");
+  if (histo && window.PENGHARGAAN) (function () {
   var data = window.PENGHARGAAN || [];
-  var histo = $("#histo"), list = $("#daftar"), q = $("#q"), info = $("#info"), more = $("#lebih");
+  var list = $("#daftar"), q = $("#q"), info = $("#info"), more = $("#lebih");
   var state = { year: null, query: "", all: false };
   var LIMIT = window.matchMedia("(max-width: 700px)").matches ? 12 : 24;
 
@@ -94,8 +90,6 @@
     render();
   });
 
-  function norm(s) { return s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, ""); }
-  function esc(s) { return s.replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
   function hl(text, query) {
     var safe = esc(text);
     if (!query) return safe;
@@ -128,11 +122,14 @@
     more.textContent = "Tampilkan semua " + rows.length;
   }
   render();
+  })();
 
   /* ---- referensi ---- */
-  var refs = window.REFERENSI || [];
-  $("#nref").textContent = refs.length;
-  $("#ref").innerHTML = refs.map(function (r) { return "<li>" + esc(r) + "</li>"; }).join("");
+  var refBox = $("#ref");
+  if (refBox && window.REFERENSI) {
+    $("#nref").textContent = window.REFERENSI.length;
+    refBox.innerHTML = window.REFERENSI.map(function (r) { return "<li>" + esc(r) + "</li>"; }).join("");
+  }
 
   /* ---- feed medsos: dimuat saat section terlihat ---- */
   var feedBox = document.querySelector("#medsos");
@@ -178,8 +175,10 @@
   } else if (feedBox) { muatFeed(); }
 
   /* ---- bagikan ---- */
-  var url = location.origin + "/";
-  var text = "Kenali lebih dekat Kang Aher, Ahmad Heryawan: dari Sukaraja ke Gedung Sate dua periode, lalu Senayan.";
+  var canon = document.querySelector('link[rel="canonical"]');
+  var url = canon ? canon.href : location.href;
+  var ogt = document.querySelector('meta[property="og:description"]');
+  var text = ogt ? ogt.content : document.title;
   var e = encodeURIComponent;
   var share = {
     wa: "https://wa.me/?text=" + e(text + " " + url),
@@ -194,7 +193,8 @@
     toast.textContent = msg; toast.classList.add("on");
     clearTimeout(tt); tt = setTimeout(function () { toast.classList.remove("on"); }, 2200);
   }
-  $("#salin").addEventListener("click", function () {
+  var salin = $("#salin");
+  if (salin) salin.addEventListener("click", function () {
     if (navigator.clipboard && window.isSecureContext) {
       navigator.clipboard.writeText(url).then(function () { say("Tautan tersalin"); }, function () { say("Salin manual: " + url); });
     } else { say("Salin manual: " + url); }
